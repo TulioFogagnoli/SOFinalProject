@@ -22,7 +22,8 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-
+#include <stdio.h>
+#include <string.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -31,6 +32,9 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+extern UART_HandleTypeDef huart2;
+extern TIM_HandleTypeDef htim2;
+extern ADC_HandleTypeDef hadc1;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -45,12 +49,15 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osThreadId adcTaskHandle;
+osThreadId pwmTaskHandle;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+void StartPwmTask(void const * argument);
+void StartAdcTask(void const * argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -102,11 +109,17 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  // osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  // defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+
+  osThreadDef(pwmTask, StartPwmTask, osPriorityNormal, 0, 128);
+  pwmTaskHandle = osThreadCreate(osThread(pwmTask), NULL);
+
+  osThreadDef(adcTask, StartAdcTask, osPriorityNormal, 0, 128);
+  adcTaskHandle = osThreadCreate(osThread(adcTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -121,15 +134,67 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+//  /* Infinite loop */
+//  for(;;)
+//  {
+//    osDelay(1);
+//  }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void StartPwmTask(void const * argument) {
+  // Inicia o canal PWM. Substitua TIM2 e TIM_CHANNEL_1 pelos seus.
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 
+  uint32_t duty_cycle = 2100; // Começa com ~50% (metade de ARR=4199)
+
+  for(;;) {
+    // Define o duty cycle do PWM
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, duty_cycle);
+
+    // Apenas para teste, mude o duty cycle ao longo do tempo
+    // duty_cycle += 100;
+    // if (duty_cycle > 4199) {
+    //   duty_cycle = 0;
+    // }
+    osDelay(100); // Atraso de 100ms
+  }
+}
+
+void StartAdcTask(void const * argument)
+{
+  /* USER CODE BEGIN vTaskADC */
+  uint32_t adc_value;
+  char msg[32]; // Buffer para guardar a mensagem a ser enviada
+
+  /* Infinite loop */
+  for(;;)
+  {
+    // Inicia a conversão ADC
+    HAL_ADC_Start(&hadc1);
+
+    // Espera a conversão ser finalizada
+    if (HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK)
+    {
+      // Lê o valor convertido
+      adc_value = HAL_ADC_GetValue(&hadc1);
+
+      // Formata a string com o valor do ADC
+      sprintf(msg, "Valor do ADC: %lu\r\n", adc_value);
+
+      // Envia a mensagem pela UART2
+      // O handle 'huart2' foi gerado pelo CubeMX e está em main.h
+      HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+    }
+
+    // Para a conversão para economizar energia
+    HAL_ADC_Stop(&hadc1);
+
+    // Aguarda 1 segundo antes da próxima leitura
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+  /* USER CODE END vTaskADC */
+}
 /* USER CODE END Application */
