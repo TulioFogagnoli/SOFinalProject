@@ -51,6 +51,9 @@ extern ADC_HandleTypeDef hadc1;
 /* USER CODE BEGIN Variables */
 osThreadId adcTaskHandle;
 osThreadId pwmTaskHandle;
+osThreadId rxW5500TaskHandle;
+osThreadId txW5500TaskHandle;
+
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -58,6 +61,8 @@ osThreadId defaultTaskHandle;
 /* USER CODE BEGIN FunctionPrototypes */
 void StartPwmTask(void const * argument);
 void StartAdcTask(void const * argument);
+void StartRxW5500Task(void const * argument);
+void StartTxW5500Task(void const * argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -120,6 +125,13 @@ void MX_FREERTOS_Init(void) {
 
   osThreadDef(adcTask, StartAdcTask, osPriorityNormal, 0, 128);
   adcTaskHandle = osThreadCreate(osThread(adcTask), NULL);
+
+  osThreadDef(rxW5500Task, StartRxW5500Task, osPriorityRealtime, 0, 128);
+  rxW5500TaskHandle = osThreadCreate(osThread(rxW5500Task), NULL);
+
+  osThreadDef(txW5500Task, StartTxW5500Task, osPriorityRealtime, 0, 128);
+  txW5500TaskHandle = osThreadCreate(osThread(txW5500Task), NULL);
+
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -197,4 +209,19 @@ void StartAdcTask(void const * argument)
   }
   /* USER CODE END vTaskADC */
 }
+
+void StartRxW5500Task(void const * argument) {
+
+  for(;;)
+  {}
+}
+
+void StartTxW5500Task(void const * argument) {
+
+  for(;;)
+  {}
+
+}
+
+
 /* USER CODE END Application */

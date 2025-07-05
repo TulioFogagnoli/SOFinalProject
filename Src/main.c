@@ -24,6 +24,10 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "w5500/w5500_spi.h"
+#include "w5500/w5500_phy.h"
+#include "w5500/w5500_host_config.h"
+#include "w5500/wizchip_conf.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -48,12 +52,26 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+// NOTE: these fields are important for static host configuration
+//		 , but the only field which is important for dynamic host
+//		 configuration is mac
+wiz_NetInfo net_info = {
+    .mac = {0x56, 0xC0, 0x70, 0xD2, 0x48, 0x10},  // Locally administered MAC address
+    .ip = {192, 168, 1, 100},                     // IP address
+    .sn = {255, 255, 255, 0},                     // Subnet mask
+    .gw = {192, 168, 1, 1},                       // Gateway
+    .dns = {8, 8, 8, 8},                          // DNS server
+    .dhcp = NETINFO_STATIC                        // Use static IP
+};
+
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
+void MX_SPI1_Init(void);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -80,7 +98,8 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  // don't buffer the output of printf
+  //setbuf(stdout, NULL);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -96,9 +115,16 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM2_Init();
   MX_USART2_UART_Init();
-  /* USER CODE BEGIN 2 */
 
+  /* USER CODE BEGIN 2 */
+  w5500_init();
   /* USER CODE END 2 */
+
+  // dynamic host configuration
+  dynamic_host_configuration(net_info.mac);
+  check_cable_presence();
+  check_phy_status();
+  print_current_host_configuration();
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
   MX_FREERTOS_Init();

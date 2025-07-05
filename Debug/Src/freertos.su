@@ -1,5 +1,7 @@
-../Src/freertos.c:75:6:vApplicationGetIdleTaskMemory	24	static
-../Src/freertos.c:89:6:MX_FREERTOS_Init	72	static
-../Src/freertos.c:134:6:StartDefaultTask	16	static
-../Src/freertos.c:147:6:StartPwmTask	24	static
-../Src/freertos.c:166:6:StartAdcTask	56	static
+../Src/freertos.c:80:6:vApplicationGetIdleTaskMemory	24	static
+../Src/freertos.c:94:6:MX_FREERTOS_Init	128	static
+../Src/freertos.c:146:6:StartDefaultTask	16	static
+../Src/freertos.c:159:6:StartPwmTask	24	static
+../Src/freertos.c:178:6:StartAdcTask	56	static
+../Src/freertos.c:213:6:StartRxW5500Task	16	static
+../Src/freertos.c:219:6:StartTxW5500Task	16	static

@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "usart.h": "c"
+        "usart.h": "c",
+        "w5500_host_config.h": "c",
+        "w5500_spi.h": "c"
     }
 }
