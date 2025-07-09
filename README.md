@@ -1,2 +1,2 @@
 # SOFinalProject
- Operation System Course Final Project
+ O.S. Course Final Project
