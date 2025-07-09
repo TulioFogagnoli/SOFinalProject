@@ -57,6 +57,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define W5500_CS_Pin GPIO_PIN_4
+#define W5500_CS_GPIO_Port GPIOC
+#define W5500_RST_Pin GPIO_PIN_5
+#define W5500_RST_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 

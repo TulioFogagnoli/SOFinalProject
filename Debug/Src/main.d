@@ -48,10 +48,7 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h ../Inc/adc.h \
- ../Inc/main.h ../Inc/spi.h ../Inc/tim.h ../Inc/usart.h ../Inc/gpio.h \
- ../Src/w5500/w5500_spi.h ../Src/w5500/w5500_phy.h \
- ../Src/w5500/w5500_host_config.h ../Src/w5500/wizchip_conf.h \
- ../Src/w5500/w5500.h ../Src/w5500/wizchip_conf.h
+ ../Inc/main.h ../Inc/spi.h ../Inc/tim.h ../Inc/usart.h ../Inc/gpio.h
 ../Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Inc/stm32f4xx_hal_conf.h:
@@ -108,9 +105,3 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../Inc/tim.h:
 ../Inc/usart.h:
 ../Inc/gpio.h:
-../Src/w5500/w5500_spi.h:
-../Src/w5500/w5500_phy.h:
-../Src/w5500/w5500_host_config.h:
-../Src/w5500/wizchip_conf.h:
-../Src/w5500/w5500.h:
-../Src/w5500/wizchip_conf.h:

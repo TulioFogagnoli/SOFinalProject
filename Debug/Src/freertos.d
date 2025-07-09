@@ -47,7 +47,11 @@ Src/freertos.o: ../Src/freertos.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
+ ../W5500_Library/Ethernet/wizchip_conf.h \
+ ../W5500_Library/Ethernet/W5500/w5500.h \
+ ../W5500_Library/Ethernet/socket.h \
+ ../W5500_Library/Ethernet/wizchip_conf.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Inc/FreeRTOSConfig.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -98,3 +102,7 @@ Src/freertos.o: ../Src/freertos.c \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
+../W5500_Library/Ethernet/wizchip_conf.h:
+../W5500_Library/Ethernet/W5500/w5500.h:
+../W5500_Library/Ethernet/socket.h:
+../W5500_Library/Ethernet/wizchip_conf.h:
